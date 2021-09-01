@@ -32,4 +32,10 @@ public class APIExceptionHandler {
         ObjetoErroDTO dto = new ObjetoErroDTO(exception.getCampo(), mensagem);
         return dto;
     }
+
+    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({RegraNegocioException.class})
+    public ObjetoErroDTO handleCampoUnico(RegraNegocioException exception) {
+        return exception.getObjetoErroDTO();
+    }
 }
