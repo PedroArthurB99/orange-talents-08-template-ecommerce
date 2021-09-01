@@ -1,5 +1,6 @@
 package br.com.orange.mercadolivre.usuario;
 
+import br.com.orange.mercadolivre.validator.CampoUnicoConstraint;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.*;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class UsuarioForm {
 
-    @NotBlank @Email
+    @NotBlank @Email @CampoUnicoConstraint(modelClass = Usuario.class, campo = "login")
     private String login;
 
     @NotBlank @Size(min=6)
