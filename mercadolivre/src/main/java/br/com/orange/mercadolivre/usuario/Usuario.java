@@ -1,5 +1,6 @@
 package br.com.orange.mercadolivre.usuario;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,7 +20,7 @@ public class Usuario implements UserDetails {
     @NotBlank @Email
     private String login;
 
-    @NotBlank @Size(min=6)
+    @NotBlank @Length(min=6)
     private String senha;
 
     @NotNull @PastOrPresent
