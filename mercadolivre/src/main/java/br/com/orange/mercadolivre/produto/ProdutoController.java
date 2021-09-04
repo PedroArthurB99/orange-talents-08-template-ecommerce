@@ -5,6 +5,9 @@ import br.com.orange.mercadolivre.imagem.Imagem;
 import br.com.orange.mercadolivre.imagem.ImagemForm;
 import br.com.orange.mercadolivre.opiniao.Opiniao;
 import br.com.orange.mercadolivre.opiniao.OpiniaoForm;
+import br.com.orange.mercadolivre.pergunta.EnviadorDeEmails;
+import br.com.orange.mercadolivre.pergunta.Pergunta;
+import br.com.orange.mercadolivre.pergunta.PerguntaForm;
 import br.com.orange.mercadolivre.usuario.Usuario;
 import br.com.orange.mercadolivre.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,18 @@ public class ProdutoController {
         Produto produto = repository.findById(id).get();
         produto.adicionarOpiniao(opiniao);
         this.repository.save(produto);
+        return new ProdutoDTO(produto);
+    }
+
+    @PostMapping
+    @RequestMapping("/{id}/perguntas")
+    @ResponseStatus(HttpStatus.OK)
+    public ProdutoDTO adicionaPerguntas(@PathVariable("id") Long id, @RequestBody @Valid PerguntaForm form, @AuthenticationPrincipal Usuario usuario) {
+        Pergunta pergunta = form.toModel(id, repository, usuario);
+        Produto produto = repository.findById(id).get();
+        produto.adicionarPergunta(pergunta);
+        this.repository.save(produto);
+        EnviadorDeEmails.enviarEmail(produto.getUsuario(), usuario);
         return new ProdutoDTO(produto);
     }
 }
