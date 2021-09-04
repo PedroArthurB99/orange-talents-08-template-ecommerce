@@ -1,6 +1,8 @@
 package br.com.orange.mercadolivre.produto;
 
 import br.com.orange.mercadolivre.categoria.CategoriaRepository;
+import br.com.orange.mercadolivre.exception.ObjetoErroDTO;
+import br.com.orange.mercadolivre.exception.RegraNegocioException;
 import br.com.orange.mercadolivre.imagem.Imagem;
 import br.com.orange.mercadolivre.imagem.ImagemForm;
 import br.com.orange.mercadolivre.opiniao.Opiniao;
@@ -71,5 +73,14 @@ public class ProdutoController {
         this.repository.save(produto);
         EnviadorDeEmails.enviarEmail(produto.getUsuario(), usuario);
         return new ProdutoDTO(produto);
+    }
+
+    @GetMapping
+    @RequestMapping("/{id}/detalhar")
+    @ResponseStatus(HttpStatus.OK)
+    public DetalharProdutoDTO detalhar(@PathVariable("id") Long id) {
+        Produto produto = this.repository.findById(id).orElseThrow(() ->new RegraNegocioException(
+                new ObjetoErroDTO("id-" + id, "Não existe um produto com esse id.")));
+        return new DetalharProdutoDTO(produto);
     }
 }
