@@ -2,6 +2,8 @@ package br.com.orange.mercadolivre.produto;
 
 import br.com.orange.mercadolivre.caracteristica.Caracteristica;
 import br.com.orange.mercadolivre.categoria.Categoria;
+import br.com.orange.mercadolivre.imagem.Imagem;
+import br.com.orange.mercadolivre.usuario.Usuario;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -22,35 +24,50 @@ public class Produto {
     @NotBlank
     private String nome;
 
-    @NotNull @Positive
+    @NotNull
+    @Positive
     private Double valor;
 
-    @NotNull @Positive
+    @NotNull
+    @Positive
     private Integer quantidadeDisponivel;
 
-    @NotBlank @Length(max = 1000)
+    @NotBlank
+    @Length(max = 1000)
     private String descricao;
 
     private LocalDateTime instanteCadastro = LocalDateTime.now();
 
-    @ManyToOne @NotNull
+    @ManyToOne
+    @NotNull
     private Categoria categoria;
 
-    @Size(min = 3) @NotNull
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @ManyToOne
+    @NotNull
+    private Usuario usuario;
+
+    @Size(min = 3)
+    @NotNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Caracteristica> caracteristicas;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagem> imagens;
+
     @Deprecated
-    public Produto() {}
+    public Produto() {
+    }
 
     public Produto(@NotBlank String nome, @NotNull Double valor, @NotNull Integer quantidadeDisponivel,
-                   @NotBlank String descricao, @NotNull Categoria categoria, @NotNull List<Caracteristica> caracteristicas) {
+                   @NotBlank String descricao, @NotNull Categoria categoria, @NotNull List<Caracteristica> caracteristicas,
+                   @NotNull Usuario usuario) {
         this.nome = nome;
         this.valor = valor;
         this.quantidadeDisponivel = quantidadeDisponivel;
         this.descricao = descricao;
         this.categoria = categoria;
         this.caracteristicas = caracteristicas;
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -81,7 +98,23 @@ public class Produto {
         return categoria;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     public List<Caracteristica> getCaracteristicas() {
         return caracteristicas;
+    }
+
+    public List<Imagem> getImagens() {
+        return imagens;
+    }
+
+    public void adicionarImagens(List<Imagem> imagens) {
+        imagens.forEach(imagem -> {
+            if (!this.imagens.contains(imagem)) {
+                this.imagens.add(imagem);
+            }
+        });
     }
 }

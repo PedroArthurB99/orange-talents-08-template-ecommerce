@@ -24,7 +24,7 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @NotNull @PastOrPresent
-    private LocalDateTime dataCadastro;
+    private LocalDateTime dataCadastro = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<PerfilUsuario> perfis = new ArrayList<>();
@@ -33,11 +33,9 @@ public class Usuario implements UserDetails {
     public Usuario() {}
 
     public Usuario(@NotBlank @Email String login,
-                   @NotBlank @Min(6)String senha,
-                   @NotBlank @PastOrPresent LocalDateTime dataCadastro) {
+                   @NotBlank @Min(6)String senha) {
         this.login = login;
         this.senha = senha;
-        this.dataCadastro = dataCadastro;
     }
 
     public Long getId() {
@@ -102,5 +100,21 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public List<PerfilUsuario> getPerfis() {
+        return perfis;
     }
 }

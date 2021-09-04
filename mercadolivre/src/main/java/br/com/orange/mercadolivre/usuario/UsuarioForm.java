@@ -14,11 +14,8 @@ public class UsuarioForm {
     @NotBlank @Size(min=6)
     private String senha;
 
-    @NotNull @PastOrPresent
-    private LocalDateTime dataCadastro;
-
     public Usuario toModel(PasswordEncoder encoder) {
-        return new Usuario(this.login, encoder.encode(this.senha), this.dataCadastro);
+        return new Usuario(this.login, encoder.encode(this.senha));
     }
 
     public String getLogin() {
@@ -27,9 +24,5 @@ public class UsuarioForm {
 
     public String getSenha() {
         return senha;
-    }
-
-    public LocalDateTime getDataCadastro() {
-        return dataCadastro;
     }
 }

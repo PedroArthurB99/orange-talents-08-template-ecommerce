@@ -6,6 +6,8 @@ import br.com.orange.mercadolivre.categoria.Categoria;
 import br.com.orange.mercadolivre.categoria.CategoriaRepository;
 import br.com.orange.mercadolivre.exception.ObjetoErroDTO;
 import br.com.orange.mercadolivre.exception.RegraNegocioException;
+import br.com.orange.mercadolivre.usuario.Usuario;
+import br.com.orange.mercadolivre.usuario.UsuarioRepository;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -36,7 +38,7 @@ public class ProdutoForm {
     @Size(min = 3) @NotNull
     private List<CaracteristicaForm> caracteristicas;
 
-    public Produto toModel(CategoriaRepository categoriaRepository) {
+    public Produto toModel(CategoriaRepository categoriaRepository, UsuarioRepository usuarioRepository, Usuario usuario) {
         Optional<Categoria> categoria = categoriaRepository.findById(this.categoriaId);
         if(!categoria.isPresent()) {
             throw new RegraNegocioException(new ObjetoErroDTO("categoriaId", "Não existe uma categoria com esse id"));
@@ -46,7 +48,7 @@ public class ProdutoForm {
             caracteristicaEntity.add(caracteristica.toModel());
         }
         return new Produto(this.nome, this.valor, this.quantidadeDisponivel, this.descricao,
-                categoria.get(), caracteristicaEntity);
+                categoria.get(), caracteristicaEntity, usuario);
     }
 
     public String getNome() {

@@ -38,4 +38,10 @@ public class APIExceptionHandler {
     public ObjetoErroDTO handleCampoUnico(RegraNegocioException exception) {
         return exception.getObjetoErroDTO();
     }
+
+    @ResponseStatus(code= HttpStatus.FORBIDDEN)
+    @ExceptionHandler({ImagemPertenceAOutroUsuarioException.class})
+    public ObjetoErroDTO handleImagemPertenceAOutroUsuário(ImagemPertenceAOutroUsuarioException exception) {
+        return exception.getObjetoErroDTO();
+    }
 }
