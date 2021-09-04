@@ -3,6 +3,7 @@ package br.com.orange.mercadolivre.produto;
 import br.com.orange.mercadolivre.caracteristica.Caracteristica;
 import br.com.orange.mercadolivre.categoria.Categoria;
 import br.com.orange.mercadolivre.imagem.Imagem;
+import br.com.orange.mercadolivre.opiniao.Opiniao;
 import br.com.orange.mercadolivre.usuario.Usuario;
 import org.hibernate.validator.constraints.Length;
 
@@ -53,6 +54,9 @@ public class Produto {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagem> imagens;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Opiniao> opinioes;
 
     @Deprecated
     public Produto() {
@@ -110,11 +114,19 @@ public class Produto {
         return imagens;
     }
 
+    public List<Opiniao> getOpinioes() {
+        return opinioes;
+    }
+
     public void adicionarImagens(List<Imagem> imagens) {
         imagens.forEach(imagem -> {
             if (!this.imagens.contains(imagem)) {
                 this.imagens.add(imagem);
             }
         });
+    }
+
+    public void adicionarOpiniao(Opiniao opiniao) {
+        this.opinioes.add(opiniao);
     }
 }

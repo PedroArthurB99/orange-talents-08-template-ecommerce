@@ -2,6 +2,7 @@ package br.com.orange.mercadolivre.produto;
 
 import br.com.orange.mercadolivre.caracteristica.CaracteristicaDTO;
 import br.com.orange.mercadolivre.imagem.ImagemDTO;
+import br.com.orange.mercadolivre.opiniao.OpiniaoDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class ProdutoDTO {
     private String donoProduto;
     private List<CaracteristicaDTO> caracteristicas = new ArrayList<>();
     private List<ImagemDTO> imagens = new ArrayList<>();
+    private List<OpiniaoDTO> opinioes = new ArrayList<>();
 
     public ProdutoDTO(Produto produto) {
         this.id = produto.getId();
@@ -36,6 +38,10 @@ public class ProdutoDTO {
         produto.getImagens().forEach(imagem -> {
             ImagemDTO imagemDTO = new ImagemDTO(imagem.getEndereco());
             this.imagens.add(imagemDTO);
+        });
+        produto.getOpinioes().forEach(opiniao -> {
+            OpiniaoDTO opiniaoDTO = new OpiniaoDTO(opiniao);
+            this.opinioes.add(opiniaoDTO);
         });
 
     }
@@ -78,5 +84,9 @@ public class ProdutoDTO {
 
     public List<ImagemDTO> getImagens() {
         return imagens;
+    }
+
+    public List<OpiniaoDTO> getOpinioes() {
+        return opinioes;
     }
 }
