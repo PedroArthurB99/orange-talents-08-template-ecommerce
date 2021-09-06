@@ -33,22 +33,46 @@ public class ProdutoDTO {
         this.instanteCadastro = produto.getInstanteCadastro();
         this.categoriaId = produto.getCategoria().getId();
         this.donoProduto = produto.getUsuario().getLogin();
-        produto.getCaracteristicas().forEach(caracteristica -> {
-            CaracteristicaDTO caracteristicaDTO = new CaracteristicaDTO(caracteristica);
-            this.caracteristicas.add(caracteristicaDTO);
-        });
-        produto.getImagens().forEach(imagem -> {
-            ImagemDTO imagemDTO = new ImagemDTO(imagem.getEndereco());
-            this.imagens.add(imagemDTO);
-        });
-        produto.getOpinioes().forEach(opiniao -> {
-            OpiniaoDTO opiniaoDTO = new OpiniaoDTO(opiniao);
-            this.opinioes.add(opiniaoDTO);
-        });
-        produto.getPerguntas().forEach(pergunta -> {
-            PerguntaDTO perguntaDTO = new PerguntaDTO(pergunta);
-            this.perguntas.add(perguntaDTO);
-        });
+        preencherCaracteristicas(produto);
+        preencherImagens(produto);
+        preencherOpinioes(produto);
+        preencherPerguntas(produto);
+    }
+
+    private void preencherCaracteristicas(Produto produto) {
+        if ((produto.getCaracteristicas() != null) && (produto.getCaracteristicas().size() > 0)) {
+            produto.getCaracteristicas().forEach(caracteristica -> {
+                CaracteristicaDTO caracteristicaDTO = new CaracteristicaDTO(caracteristica);
+                this.caracteristicas.add(caracteristicaDTO);
+            });
+        }
+    }
+
+    private void preencherImagens(Produto produto) {
+        if ((produto.getImagens() != null) && (produto.getImagens().size() > 0)) {
+            produto.getImagens().forEach(imagem -> {
+                ImagemDTO imagemDTO = new ImagemDTO(imagem.getEndereco());
+                this.imagens.add(imagemDTO);
+            });
+        }
+    }
+
+    private void preencherOpinioes(Produto produto) {
+        if ((produto.getOpinioes() != null) && (produto.getOpinioes().size() > 0)) {
+            produto.getOpinioes().forEach(opiniao -> {
+                OpiniaoDTO opiniaoDTO = new OpiniaoDTO(opiniao);
+                this.opinioes.add(opiniaoDTO);
+            });
+        }
+    }
+
+    private void preencherPerguntas(Produto produto) {
+        if ((produto.getPerguntas() != null) && (produto.getPerguntas().size() > 0)) {
+            produto.getPerguntas().forEach(pergunta -> {
+                PerguntaDTO perguntaDTO = new PerguntaDTO(pergunta);
+                this.perguntas.add(perguntaDTO);
+            });
+        }
     }
 
     public Long getId() {

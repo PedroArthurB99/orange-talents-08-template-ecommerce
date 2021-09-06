@@ -2,9 +2,10 @@ package br.com.orange.mercadolivre.produto;
 
 import br.com.orange.mercadolivre.caracteristica.Caracteristica;
 import br.com.orange.mercadolivre.categoria.Categoria;
+import br.com.orange.mercadolivre.exception.ObjetoErroDTO;
+import br.com.orange.mercadolivre.exception.RegraNegocioException;
 import br.com.orange.mercadolivre.imagem.Imagem;
 import br.com.orange.mercadolivre.opiniao.Opiniao;
-import br.com.orange.mercadolivre.pergunta.EnviadorDeEmails;
 import br.com.orange.mercadolivre.pergunta.Pergunta;
 import br.com.orange.mercadolivre.usuario.Usuario;
 import org.hibernate.validator.constraints.Length;
@@ -64,8 +65,7 @@ public class Produto {
     private List<Pergunta> perguntas;
 
     @Deprecated
-    public Produto() {
-    }
+    public Produto() {}
 
     public Produto(@NotBlank String nome, @NotNull Double valor, @NotNull Integer quantidadeDisponivel,
                    @NotBlank String descricao, @NotNull Categoria categoria, @NotNull List<Caracteristica> caracteristicas,
@@ -143,4 +143,13 @@ public class Produto {
         this.perguntas.add(opiniao);
     }
 
+    public void abaterEstoque(Integer quantidade) {
+        if (this.quantidadeDisponivel >= quantidade) {
+            this.quantidadeDisponivel -= quantidade;
+        }
+        else {
+            throw new RegraNegocioException(new ObjetoErroDTO(
+                    "quantidade", "Não temos dispoível esta quantidade desse produto em estoque."));
+        }
+    }
 }
