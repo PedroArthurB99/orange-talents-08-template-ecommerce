@@ -4,16 +4,21 @@ import br.com.orange.mercadolivre.exception.ObjetoErroDTO;
 import br.com.orange.mercadolivre.exception.RegraNegocioException;
 import br.com.orange.mercadolivre.validator.CampoUnicoConstraint;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
 public class CategoriaForm {
 
-    @NotNull
+    @NotBlank
     @CampoUnicoConstraint(modelClass = Categoria.class, campo = "nome")
     private String nome;
 
     private Long categoriaMaeId;
+
+    public CategoriaForm(String nome, Long categoriaMaeId) {
+        this.nome = nome;
+        this.categoriaMaeId = categoriaMaeId;
+    }
 
     public Categoria toModel(CategoriaRepository repository) {
         Categoria categoria = new Categoria(this.nome);

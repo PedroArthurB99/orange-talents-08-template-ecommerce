@@ -14,6 +14,11 @@ public class UsuarioForm {
     @NotBlank @Size(min=6)
     private String senha;
 
+    public UsuarioForm(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+    }
+
     public Usuario toModel(PasswordEncoder encoder) {
         return new Usuario(this.login, encoder.encode(this.senha));
     }
